@@ -7,16 +7,19 @@ import uuid
 from cookiecutter.main import cookiecutter
 
 
-def generate_cookiecutter(config, output_path):
+def generate_cookiecutter(config):
     cookiecutter_vars = json.loads(config["cookiecutter_vars"])
+    output_dir = f"/tmp/{uuid.uuid4().hex}"
 
     cookiecutter(
         config["cookiecutter_repo"],
         checkout=config["cookiecutter_repo_commit_hash"],
         extra_context=cookiecutter_vars,
-        output_dir=output_path,
+        output_dir=output_dir,
         no_input=True,
     )
+
+    return glob.glob(f"{output_dir}/*")[0]
 
 
 def list_resulting_files(output_dir):
@@ -39,14 +42,12 @@ def main():
         if "cookiecutter_vars" not in terraform_config:
             raise Exception("Missing cookiecutter_vars")
 
-        output_path = "/tmp/" + uuid.uuid4().hex
-
-        generate_cookiecutter(terraform_config, output_path)
-        files = list_resulting_files(output_path)
+        prefix = generate_cookiecutter(terraform_config)
+        files = list_resulting_files(prefix)
 
         output = json.dumps({
             "paths": ",".join(files),
-            "prefix": output_path
+            "prefix": prefix
         })
         sys.stdout.write(output)
     except Exception as e:
