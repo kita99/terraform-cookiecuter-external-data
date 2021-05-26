@@ -23,7 +23,7 @@ def generate_cookiecutter(config):
 
 
 def list_resulting_files(output_dir):
-    files = []
+    result = []
 
     for root, _, files in os.walk(output_dir):
         dir_without_prefix = root.removeprefix(output_dir)
@@ -35,9 +35,9 @@ def list_resulting_files(output_dir):
             if dir_without_prefix:
                 file = f"{dir_without_prefix}/{f}"
 
-            files.append(file)
+            result.append(file)
 
-    return files
+    return result
 
 
 def main():
