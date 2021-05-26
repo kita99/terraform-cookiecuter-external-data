@@ -8,12 +8,7 @@ from cookiecutter.main import cookiecutter
 
 
 def generate_cookiecutter(config, output_path):
-    required_vars = ["repo_name", "name", "app_version", "chart_version"]
     cookiecutter_vars = json.loads(config["cookiecutter_vars"])
-
-    for var in required_vars:
-        if var not in cookiecutter_vars:
-            raise Exception(f"Missing cookiecutter_vars.{var}")
 
     cookiecutter(
         config["cookiecutter_repo"],
