@@ -22,7 +22,7 @@ def generate_cookiecutter(config, output_path):
 def list_resulting_files(output_dir):
     files = glob.glob(f"{output_dir}/**", recursive=True)
     files = [f for f in files if os.path.isfile(f)]
-    return [f.removeprefix(output_dir) for f in files]
+    return [f.removeprefix(output_dir + "/") for f in files]
 
 
 def main():
