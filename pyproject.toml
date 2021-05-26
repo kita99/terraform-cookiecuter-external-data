@@ -1,0 +1,16 @@
+[tool.poetry]
+name = "terraform-external-data-cookiecutter"
+version = "0.1.0"
+description = "A Terraform external data source for setting up cookiecutter projects"
+authors = ["Adrian Dinis <adriandinis99@gmail.com>"]
+
+[tool.poetry.dependencies]
+python = "^3.9"
+cookiecutter = "^1.7.3"
+
+[tool.poetry.dev-dependencies]
+shiv = "^0.5.2"
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
