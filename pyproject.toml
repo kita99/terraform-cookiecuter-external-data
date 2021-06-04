@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "terraform-cookiecutter-external-data"
-version = "0.1.0"
+version = "0.1.6"
 description = "A Terraform external data source for setting up cookiecutter projects"
 authors = ["Adrian Dinis <adriandinis99@gmail.com>"]
 
