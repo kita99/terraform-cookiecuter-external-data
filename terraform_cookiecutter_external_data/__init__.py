@@ -10,10 +10,14 @@ from cookiecutter.main import cookiecutter
 def generate_cookiecutter(config):
     cookiecutter_vars = json.loads(config["cookiecutter_vars"])
     output_dir = f"/tmp/{uuid.uuid4().hex}"
+    checkout = None
+
+    if "cookiecutter_git_checkout" in config:
+        checkout = config["cookiecutter_git_checkout"]
 
     cookiecutter(
-        config["cookiecutter_repo"],
-        checkout=config["cookiecutter_repo_commit_hash"],
+        config["cookiecutter_template"],
+        checkout=checkout,
         extra_context=cookiecutter_vars,
         output_dir=output_dir,
         no_input=True,
@@ -40,15 +44,29 @@ def list_resulting_files(output_dir):
     return result
 
 
+def template_is_repository(template):
+    if template.startswith("git"):
+        return True
+
+    if template.startswith("https://"):
+        return True
+
+    if template.startswith("gh:"):
+        return True
+
+    return False
+
+
 def main():
     try:
         terraform_config = json.loads(sys.stdin.read())
 
-        if "cookiecutter_repo" not in terraform_config:
-            raise Exception("Missing cookiecutter_repo")
+        if "cookiecutter_template" not in terraform_config:
+            raise Exception("Missing cookiecutter_template")
 
-        if "cookiecutter_repo_commit_hash" not in terraform_config:
-            raise Exception("Missing cookiecutter_repo_commit_hash")
+        if template_is_repository(terraform_config["cookiecutter_template"]):
+            if "cookiecutter_git_checkout" not in terraform_config:
+                raise Exception("Missing cookiecutter_git_checkout")
 
         if "cookiecutter_vars" not in terraform_config:
             raise Exception("Missing cookiecutter_vars")
